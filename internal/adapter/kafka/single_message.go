@@ -73,24 +73,24 @@ func (s *SingleMessageConsumer) ConsumeMessages() {
 				value := entity.Order{}
 				err := json.Unmarshal(e.Value, &value)
 				if err != nil {
-					fmt.Println(err)
+					log.Println(err)
 				} else {
 					fmt.Printf("Message on %s: %s\n", e.TopicPartition, e.Value)
 					order := entity.Order{}
 					err = json.Unmarshal(e.Value, &order)
 					if err != nil {
-						fmt.Printf("Error unmarshal %v\n", err)
+						log.Printf("Error unmarshal %v\n", err)
 					}
-					fmt.Printf("Order: %+v\n", order)
+					log.Printf("Order: %+v\n", order)
 				}
 
 				if e.Headers != nil {
-					fmt.Printf("Headers: %v\n", e.Headers)
+					log.Printf("Headers: %v\n", e.Headers)
 				}
 			case kafka.Error:
-				fmt.Printf("Error: %v\n", e)
+				log.Printf("Error: %v\n", e)
 			default:
-				fmt.Printf("Ignored %v\n", e)
+				log.Printf("Ignored %v\n", e)
 			}
 		}
 	}

@@ -46,7 +46,7 @@ func (p *Producer) Send(data []byte) error {
 		return fmt.Errorf("failed to produce message: %w", err)
 	}
 
-	p.producer.Flush(15 * 1000)
+	p.producer.Flush(15)
 
 	return nil
 }

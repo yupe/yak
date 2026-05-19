@@ -42,6 +42,8 @@ func NewBatchMessageConsumer(config *config.BatchConfig) (*BatchMessageConsumer,
 		return nil, err
 	}
 
+	fmt.Println("Consumer successfully subscribed to topic. GroupID: ", config.GroupID)
+
 	return &BatchMessageConsumer{
 		config:   config,
 		consumer: c,
@@ -64,7 +66,7 @@ func (s *BatchMessageConsumer) ConsumeMessages() {
 			return
 		}
 
-		fmt.Println("processing batch", len(messages))
+		log.Println("processing batch\n", len(messages))
 
 		var lastOffset int64
 		var lastPartition int32
@@ -74,10 +76,10 @@ func (s *BatchMessageConsumer) ConsumeMessages() {
 			value := entity.Order{}
 			err := json.Unmarshal(message.Value, &value)
 			if err != nil {
-				fmt.Printf("Error unmarshal: %v\n", err)
+				log.Printf("Error unmarshal: %v\n", err)
 				continue
 			}
-			fmt.Printf("Order: %+v\n", value)
+			log.Printf("Order: %+v\n", value)
 
 			lastOffset = int64(message.TopicPartition.Offset)
 			lastPartition = message.TopicPartition.Partition
@@ -96,11 +98,11 @@ func (s *BatchMessageConsumer) ConsumeMessages() {
 			if err != nil {
 				log.Printf("Failed to commit offsets: %v", err)
 			} else {
-				fmt.Printf("Committed batch up to offset %d on partition %d\n", lastOffset, lastPartition)
+				log.Printf("Committed batch up to offset %d on partition %d\n", lastOffset, lastPartition)
 			}
 		}
 
-		fmt.Printf("batch processing stop\n")
+		log.Printf("batch processing stop\n")
 	}
 
 	run := true
@@ -108,11 +110,11 @@ func (s *BatchMessageConsumer) ConsumeMessages() {
 	for run {
 		select {
 		case sig := <-sigchan:
-			fmt.Printf("Caught signal %v: terminating\n", sig)
+			log.Printf("Caught signal %v: terminating\n", sig)
 			run = false
 		case <-ticker.C:
 			if len(batch) > 0 {
-				fmt.Printf("Batch timeout reached, processing %d messages\n", len(batch))
+				log.Printf("Batch timeout reached, processing %d messages\n", len(batch))
 				processBatch(batch)
 				batch = make([]*kafka.Message, 0, batchSize)
 			}
