@@ -1,0 +1,11 @@
+docker exec -it <CONTAINER_ID> kafka-topics.sh --create \
+--topic yandex-hw-1 \
+--partitions 3 \
+--replication-factor 2 \
+--bootstrap-server localhost:9094
+
+
+Topic: yandex-hw-1      TopicId: M0_ggQ7-SBGStPTw7d9Yog PartitionCount: 3       ReplicationFactor: 2    Configs:
+        Topic: yandex-hw-1      Partition: 0    Leader: 0       Replicas: 0,1   Isr: 0,1
+        Topic: yandex-hw-1      Partition: 1    Leader: 1       Replicas: 1,0   Isr: 1,0
+        Topic: yandex-hw-1      Partition: 2    Leader: 0       Replicas: 0,1   Isr: 0,1
