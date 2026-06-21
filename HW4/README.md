@@ -133,8 +133,8 @@ customers=#
 
 ### Запуск consumer
 
-cd consumer 
-go run main.go
+```cd consumer``` 
+```go run main.go```
 После этого необходимо сделать вставку в PostgreSQL и можно увидеть сообщения в консоли
 
 ### Таблица результатов эксперимента из урока
